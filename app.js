@@ -1,16 +1,18 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var expressHbs = require('express-handlebars');
-var mongoose = require('mongoose');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let expressHbs = require('express-handlebars');
+let mongoose = require('mongoose');
+let session = require('express-session');
 
-var indexRouter = require('./routes/index');
 
-var app = express();
+let indexRouter = require('./routes/index');
 
-var mongoUri = 'mongodb+srv://mohitlal:Ms0ST9vavfhZ2mJ1@cluster0-p3frq.mongodb.net/test?retryWrites=true&w=majority';
+let app = express();
+
+let mongoUri = 'mongodb+srv://mohitlal:Ms0ST9vavfhZ2mJ1@cluster0-p3frq.mongodb.net/test?retryWrites=true&w=majority';
 mongoose.connect(mongoUri, { useNewUrlParser: true });
 
 // view engine setup
@@ -21,6 +23,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({secret: 'secret', resave: false, saveUninitialized: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
